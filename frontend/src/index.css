@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #020617;
+  --bg-secondary: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.45);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --glow-blue: #38bdf8;
+  --glow-blue-hover: #0ea5e9;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-green: #34d399;
+  --accent-red: #f87171;
+  --font-title: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  background-image: radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+                    radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 40%);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Glassmorphism Classes */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card:hover {
+  border-color: rgba(56, 189, 248, 0.2);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(56, 189, 248, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--glow-blue) 0%, #0284c7 100%);
+  color: #020617;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: var(--font-title);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  opacity: 0.95;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+  transform: scale(1.02);
+}
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: var(--font-title);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Layout Utilities */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main-content {
+  flex: 1;
+  padding: 24px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Input Styles */
+.form-input, .form-select {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--glow-blue);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.1);
+}
+
+/* Chat bubble styling */
+.chat-container {
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.message-bubble {
+  max-width: 75%;
+  padding: 14px 18px;
+  border-radius: 16px;
+  line-height: 1.5;
+  font-size: 14.5px;
+}
+.message-user {
+  align-self: flex-end;
+  background: #0369a1;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.message-assistant {
+  align-self: flex-start;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom-left-radius: 4px;
+}
+
+/* Suggestion Chips */
+.suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+}
+.chip {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: var(--glow-blue);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chip:hover {
+  background: var(--glow-blue);
+  color: #020617;
+}
+
+/* Comparison Table Grid */
+.comparison-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.comparison-matrix th, .comparison-matrix td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.comparison-matrix th {
+  font-family: var(--font-title);
+  background: rgba(15, 23, 42, 0.4);
+  color: var(--text-secondary);
+}
+.compare-highlight-win {
+  background: rgba(52, 211, 153, 0.08);
+  color: var(--accent-green);
+}
+.compare-highlight-loss {
+  background: rgba(248, 113, 113, 0.08);
+  color: var(--accent-red);
+}
+
+/* Stock status tags */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.status-instock {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--accent-green);
+}
+.status-outstock {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--accent-red);
+}
+
+/* Animation Utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Tabs UI */
+.tab-container {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-title);
+  font-weight: 500;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+.tab-btn.active {
+  color: var(--glow-blue);
+  border-bottom-color: var(--glow-blue);
+}
