@@ -73,7 +73,10 @@ export default function CarDetail() {
           <img 
             src={car.images && car.images[0] ? car.images[0] : 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=600'} 
             alt={`${car.brand} ${car.model}`}
+<<<<<<< HEAD
             onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=600'; }}
+=======
+>>>>>>> f82fe05c622b74763ace4d5a0d3f5b82c5a95241
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </div>

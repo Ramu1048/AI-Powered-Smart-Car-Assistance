@@ -4,7 +4,11 @@ from pydantic import BaseModel, Field
 from app.schemas.common import ApiResponse
 from app.services.ai_service import AIService
 
+<<<<<<< HEAD
 router = APIRouter(prefix="/ai", tags=["ai"])
+=======
+router = APIRouter(prefix="/api/ai", tags=["ai"])
+>>>>>>> f82fe05c622b74763ace4d5a0d3f5b82c5a95241
 ai_service = AIService()
 
 class ChatRequest(BaseModel):

@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
+=======
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+>>>>>>> f82fe05c622b74763ace4d5a0d3f5b82c5a95241
 from app.database.postgres import engine, Base
 from app.routers.auth import router as auth_router
 from app.routers.cars import router as cars_router
@@ -33,6 +39,7 @@ app.add_middleware(
 )
 
 # Register Routers
+<<<<<<< HEAD
 app.include_router(auth_router, prefix="/api")
 app.include_router(cars_router, prefix="/api")
 app.include_router(compare_router, prefix="/api")
@@ -67,3 +74,19 @@ else:
     @app.get("/", include_in_schema=False)
     def root():
         return RedirectResponse(url="/docs")
+=======
+app.include_router(auth_router)
+app.include_router(cars_router)
+app.include_router(compare_router)
+app.include_router(showrooms_router)
+app.include_router(bookings_router)
+app.include_router(reviews_router)
+app.include_router(wishlist_router)
+app.include_router(admin_router)
+app.include_router(ai_router)
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse(url="/docs")
+>>>>>>> f82fe05c622b74763ace4d5a0d3f5b82c5a95241
