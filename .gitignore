@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Unit test / coverage reports
+.pytest_cache/
+.mypy_cache/
+.coverage
+
+# Virtual Environments
+.venv/
+venv/
+env/
+
+# Environment configurations
+.env
+
+# Database and Vector Indexes
+smart_car_db.db
+chroma_db/
+*.log
