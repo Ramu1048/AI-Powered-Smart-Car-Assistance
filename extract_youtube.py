@@ -58,19 +58,20 @@ MOCK_SUMMARIES = {
     "Hyundai Creta": {
         "summary_text": "Hyundai Creta review summary. Creta delivers a highly premium cabin experience, smooth engine refinement levels, and extensive features. Styling remains subjective.",
         "pros": ["Excellent engine refinement", "Feature loaded cabin", "Plush ride quality"],
-        "cons": ["Polarizing styling", "Top specs are expensive"],
+        "cons": ["Styling is subjective", "High pricing for top specs"],
         "mileage_observed": "12.8 kmpl (City), 16.5 kmpl (Highway)",
-        "ride_quality": "Soft suspension setup, very comfortable over potholes.",
-        "common_complaints": ["Infotainment lag issues", "Premium price markup"]
+        "ride_quality": "Soft and comfortable suspension, digests potholes well.",
+        "common_complaints": ["Infotainment lag", "Premium pricing"]
     }
 }
 
-def fetch_youtube_data_api(query: str, max_results: int = 1):
-    """Hits YouTube Search API to retrieve video metadata."""
+def fetch_youtube_data_api(query: str, max_results: int = 1) -> dict:
+    """Hits YouTube Search API to retrieve top review video details."""
     if not YOUTUBE_API_KEY:
         return None
     try:
-        url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults={max_results}&q={urllib.parse.quote(query)}&type=video&key={YOUTUBE_API_KEY}"
+        encoded_query = urllib.parse.quote(query)
+        url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&q={encoded_query}&type=video&maxResults={max_results}&key={YOUTUBE_API_KEY}"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req) as res:
             data = json.loads(res.read().decode("utf-8"))
@@ -135,27 +136,46 @@ def process_car_reviews():
         
         # 1. Fetch metadata
         video_metadata = fetch_youtube_data_api(f"{car_name} 2024 review India", max_results=1)
-        if not video_metadata:
-            # Fallback to mock video metadata
-            video_id = f"mock_vid_{car.id}"
-            video_metadata = {
-                "video_id": video_id,
-                "title": f"Expert Review: The New {car_name} (2024)",
-                "thumbnail": f"https://example.com/thumbnails/car_{car.id}.jpg",
-                "view_count": 85000 + (car.id * 15000),
-                "description": f"Reviewing the performance, safety and interior comfort of {car_name}."
-            }
         
-        # Save to database
-        db_review = db.query(YoutubeReview).filter(YoutubeReview.video_id == video_metadata["video_id"]).first()
-        if not db_review:
+        # Find if we already have a seeded review for this car
+        db_review = db.query(YoutubeReview).filter(YoutubeReview.car_id == car.id).first()
+        if db_review:
+            if video_metadata and not video_metadata["video_id"].startswith("mock_"):
+                db_review.video_id = video_metadata["video_id"]
+                db_review.title = video_metadata["title"]
+                db_review.thumbnail = video_metadata["thumbnail"]
+                db_review.view_count = video_metadata["view_count"]
+                db_review.description = video_metadata["description"]
+                db_review.video_url = f"https://www.youtube.com/watch?v={video_metadata['video_id']}"
+                db.commit()
+            print(f"Using video metadata: {db_review.title}")
+            video_metadata = {
+                "video_id": db_review.video_id,
+                "title": db_review.title,
+                "thumbnail": db_review.thumbnail,
+                "view_count": db_review.view_count,
+                "description": db_review.description
+            }
+        else:
+            if not video_metadata:
+                video_id = f"mock_vid_{car.id}"
+                video_metadata = {
+                    "video_id": video_id,
+                    "title": f"Expert Review: The New {car_name} (2024)",
+                    "thumbnail": f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg",
+                    "view_count": 85000 + (car.id * 15000),
+                    "description": f"Reviewing the performance, safety and interior comfort of {car_name}."
+                }
             db_review = YoutubeReview(
                 car_id=car.id,
                 video_id=video_metadata["video_id"],
                 title=video_metadata["title"],
                 thumbnail=video_metadata["thumbnail"],
                 view_count=video_metadata["view_count"],
-                description=video_metadata["description"]
+                description=video_metadata["description"],
+                channel_name="Prasad Automobiles",
+                channel_url="https://www.youtube.com/@PrasadAutomobiles",
+                video_url=f"https://www.youtube.com/watch?v={video_metadata['video_id']}"
             )
             db.add(db_review)
             db.commit()

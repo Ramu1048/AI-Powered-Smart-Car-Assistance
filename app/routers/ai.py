@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from app.schemas.common import ApiResponse
 from app.services.ai_service import AIService
 
-router = APIRouter(prefix="/api/ai", tags=["ai"])
+router = APIRouter(prefix="/ai", tags=["ai"])
 ai_service = AIService()
 
 class ChatRequest(BaseModel):
@@ -54,6 +54,14 @@ class CompareRequest(BaseModel):
             }
         }
     }
+
+class VoiceRequest(BaseModel):
+    message: str = Field(..., description="Speech-to-text input string")
+
+class SmartCompareRequest(BaseModel):
+    car_id: int = Field(..., description="Base car ID to compare against")
+    budget_range: Optional[List[float]] = Field(None, description="Min and max budget bounds in INR")
+    required_features: Optional[List[str]] = Field(default=[], description="Required tech or safety features")
 
 @router.post("/chat", response_model=ApiResponse[Dict[str, Any]])
 def ai_chat(payload: ChatRequest):
@@ -105,6 +113,40 @@ def ai_compare(payload: CompareRequest):
             success=True,
             data=data,
             message="Car comparison generated successfully"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+@router.post("/voice", response_model=ApiResponse[Dict[str, Any]])
+def ai_voice(payload: VoiceRequest):
+    try:
+        data = ai_service.voice_chat(payload.message)
+        return ApiResponse(
+            success=True,
+            data=data,
+            message="Voice assistant response computed successfully"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+@router.post("/smart-compare", response_model=ApiResponse[Dict[str, Any]])
+def ai_smart_compare(payload: SmartCompareRequest):
+    try:
+        data = ai_service.smart_compare(
+            car_id=payload.car_id,
+            budget_range=payload.budget_range,
+            required_features=payload.required_features
+        )
+        return ApiResponse(
+            success=True,
+            data=data,
+            message="Smart budget comparison generated successfully"
         )
     except Exception as e:
         raise HTTPException(

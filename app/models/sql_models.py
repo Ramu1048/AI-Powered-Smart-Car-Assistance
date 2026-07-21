@@ -32,6 +32,16 @@ class Car(Base):
     safety_features = Column(JSON, nullable=True)  # List of safety features
     tech_features = Column(JSON, nullable=True)    # List of technology features
     images = Column(JSON, nullable=True)           # List of image URLs
+
+    # --- Expanded Specification Fields ---
+    body_type = Column(String, nullable=True)      # Hatchback, Sedan, SUV, MPV, etc.
+    seating_capacity = Column(Integer, nullable=True, default=5)
+    ncap_rating = Column(Float, nullable=True)     # Global NCAP star rating (0-5)
+    dimensions = Column(JSON, nullable=True)       # {length_mm, width_mm, height_mm, wheelbase_mm, ground_clearance_mm, boot_space_litres}
+    engine_details = Column(JSON, nullable=True)   # {capacity_cc, max_power_bhp, max_torque_nm, cylinders, transmission_type}
+    adas_features = Column(JSON, nullable=True)    # List of ADAS features
+    comfort_features = Column(JSON, nullable=True) # {sunroof_type, ventilated_seats, drive_modes, touchscreen_size_inches, digital_cluster}
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     bookings = relationship("Booking", back_populates="car", cascade="all, delete-orphan")
@@ -117,6 +127,10 @@ class YoutubeReview(Base):
     thumbnail = Column(String, nullable=True)
     view_count = Column(Integer, nullable=True)
     description = Column(String, nullable=True)
+    # --- YouTube Channel & Video Redirection Fields ---
+    channel_name = Column(String, nullable=True)
+    channel_url = Column(String, nullable=True)
+    video_url = Column(String, nullable=True)  # Full YouTube video URL
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     car = relationship("Car", back_populates="youtube_reviews")
