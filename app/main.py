@@ -15,8 +15,11 @@ from app.routers.wishlist import router as wishlist_router
 from app.routers.admin import router as admin_router
 from app.routers.ai import router as ai_router
 
-# Create Postgres tables automatically
-Base.metadata.create_all(bind=engine)
+# Create tables automatically
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"Warning: Table creation skipped or failed: {e}")
 
 app = FastAPI(
     title="AI-Powered Smart Car Assistance API",
