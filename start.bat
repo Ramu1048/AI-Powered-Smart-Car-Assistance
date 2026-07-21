@@ -6,9 +6,19 @@ echo.
 echo Starting FastAPI Backend...
 start "FastAPI Backend" cmd /k "python -m uvicorn app.main:app --port 8000"
 
+<<<<<<< HEAD
 echo.
 echo Both servers are starting up in separate terminal windows!
 echo - Backend: http://127.0.0.1:8000
 
+=======
+echo Starting React Vite Frontend...
+start "React Frontend" cmd /k "cd frontend && npm.cmd run dev"
+
+echo.
+echo Both servers are starting up in separate terminal windows!
+echo - Backend: http://127.0.0.1:8000
+echo - Frontend: http://localhost:5173
+>>>>>>> 839ba178d4aeef05cb4c560f62ca954700b89f58
 echo.
 pause
