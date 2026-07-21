@@ -2,8 +2,11 @@ import axios from 'axios';
 
 const getApiBaseUrl = () => {
   if (typeof window !== 'undefined') {
-    if (window.location.port === '5173') {
-      return 'http://localhost:8000';
+    // If running React local dev server on any port (not 8000), point to backend on port 8000
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      if (window.location.port !== '8000' && window.location.port !== '') {
+        return 'http://localhost:8000';
+      }
     }
     return window.location.origin;
   }
